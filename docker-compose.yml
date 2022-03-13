@@ -1,0 +1,29 @@
+version: '3.1'
+
+services:
+  db:
+    build:
+      context: .
+      dockerfile: ./docker/mysql/Dockerfile
+    container_name: mysql
+    volumes:
+      - db_volume:/var/lib/mysql # バックアップ
+    env_file:
+      - ./docker/mysql/db-variable.env #環境変数の設定
+    restart: always
+
+  app:
+    build:
+      context: .
+      dockerfile: ./docker/php-apache/Dockerfile
+    container_name: php-apache
+    volumes:
+      - ./src/:/var/www/html
+    ports:
+      - 80:80
+    depends_on:
+      - db
+
+
+volumes:
+  db_volume:
