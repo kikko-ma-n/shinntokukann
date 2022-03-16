@@ -1,29 +1,54 @@
 version: '3.1'
 
 services:
-  db:
+  db: # データベース
     build:
       context: .
       dockerfile: ./docker/mysql/Dockerfile
     container_name: mysql
     volumes:
       - db_volume:/var/lib/mysql # バックアップ
+    networks:
+      - docker-net
     env_file:
       - ./docker/mysql/db-variable.env #環境変数の設定
     restart: always
 
-  app:
+  app: # Webアプリ
     build:
       context: .
       dockerfile: ./docker/php-apache/Dockerfile
     container_name: php-apache
     volumes:
       - ./src/:/var/www/html
-    ports:
-      - 80:80
+    # ports:
+    #   - 80:80
+    networks:
+      docker-net:
+        aliases:
+          - kikko-ma-n.net
+          - kikko-ma-n.site
     depends_on:
       - db
+    restart: always
+
+  https-portal:
+    image: steveltn/https-portal
+    container_name: https-portal
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - docker-net
+    environment:
+      STAGE: local
+      DOMAINS: >-
+        kikko-ma-n.net -> http://kikko-ma-n.net
+    restart: always
 
 
 volumes:
   db_volume:
+
+networks:
+  docker-net:
