@@ -14,8 +14,8 @@ services:
 
   app:
     build:
-      context: .
-      dockerfile: ./docker/php-apache/Dockerfile
+      context: ./docker/php-apache/
+      dockerfile: Dockerfile
     container_name: php-apache
     volumes:
       - ./docker/php-apache/src/:/var/www/html

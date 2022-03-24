@@ -283,6 +283,8 @@ class Personal {
         $upDate = ($time * 10) % 30;
         $upFate = date('Y-m-d', strtotime($division. "+$upYear year". "+$upMonth month". "+$upDate day"));
       };
+      // echo $days . '|' . $upYear;
+      // echo PHP_EOL;
       // echo $upFate . '|';
       // $result = floor(($upFate - floor($this->division() / 10000)) / 10000);
       $result = explode('-', $upFate);
