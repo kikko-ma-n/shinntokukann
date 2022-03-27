@@ -94,12 +94,14 @@ class Personal {
       }
       $this->gender = $gender;
       $str_date = "$year-$month-$day";
-      if($year < 1941) {
-        $this->days = (strtotime('1942-01-01') - strtotime($str_date)) / (60 * 60 * 24);
-      } else {
-        $this->days = (strtotime($str_date) - strtotime('1942-01-01')) / (60 * 60 * 24);
-      }
+      // if($year < 1942) {
+      //   $this->days = (strtotime('1942-01-01') - strtotime($str_date)) / (60 * 60 * 24);
+      // } else {
+      //   $this->days = (strtotime($str_date) - strtotime('1942-01-01')) / (60 * 60 * 24);
+      // }
+      $this->days = (strtotime($str_date) - strtotime('1942-01-01')) / (60 * 60 * 24);
 
+      
       //パブリックプロパティの初期化
       $this->pillars = num_char($this->pillars());
       $this->pillars_five = five_char($this->five($this->pillars()));
@@ -171,12 +173,22 @@ class Personal {
       ];
 
       //日柱を求める
-      if($this->time < 2300) {
-        $heaven = ($this->days) % 10;
-        $zodiac = ($this->days + 2) % 12;
+      if($this->days < 0) {
+        if($this->time < 2300) {
+          $heaven = (10 + ($this->days % 10)) % 10;
+          $zodiac = ((12 + ($this->days % 12)) + 2) % 12;
+        } else {
+          $heaven = ((10 + ($this->days % 10)) + 1) % 10;
+          $zodiac = ((12 + ($this->days % 12)) + 3) % 12;
+        }
       } else {
-        $heaven = ($this->days + 1) % 10;
-        $zodiac = ($this->days + 3) % 12;
+        if($this->time < 2300) {
+          $heaven = ($this->days) % 10;
+          $zodiac = ($this->days + 2) % 12;
+        } else {
+          $heaven = ($this->days + 1) % 10;
+          $zodiac = ($this->days + 3) % 12;
+        }
       }
       $date = [
         $heaven,
@@ -189,10 +201,10 @@ class Personal {
       } else {
         if ($this->time < 2300){
           $zodiac = (($this->time + 100) / 200) % 12;
-          $heaven = ((((($this->days) % 10) % 5) * 2) + $zodiac) % 10;
+          $heaven = ((($date[0] % 5) * 2) + $zodiac) % 10;
         } else {
           $zodiac = 0;
-          $heaven = ((($this->days + 1) % 10) % 5) * 2;
+          $heaven = ($date[0] % 5) * 2;
         }
         $time = [
           $heaven,
