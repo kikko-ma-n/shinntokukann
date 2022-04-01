@@ -1,3 +1,4 @@
 docker/mysql/db-variable.env
 docker/php-apache/src/img
 docker/php-apache/src/inc/pass.php
+.env
