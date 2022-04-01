@@ -19,11 +19,20 @@ services:
     container_name: php-apache
     volumes:
       - ./docker/php-apache/src/:/var/www/html
-    ports:
-      - 80:80
+    environment:
+      - VIRTUAL_HOST=${DMAIN}
+      - LETSENCRYPT_HOST=${DMAIN}
+    networks:
+      - nginx-proxy_default
+    # ports:
+    #   - 80:80
     depends_on:
       - db
 
 
 volumes:
   db_volume:
+
+networks:
+  nginx-proxy_default:
+    external: true
