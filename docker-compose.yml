@@ -22,8 +22,8 @@ services:
     volumes:
       - ./docker/php-apache/src/:/var/www/html
     environment:
-      - VIRTUAL_HOST=${DMAIN}
-      - LETSENCRYPT_HOST=${DMAIN}
+      - VIRTUAL_HOST=${DMAIN},www.${DMAIN}
+      - LETSENCRYPT_HOST=${DMAIN},www.${DMAIN}
     networks:
       - nginx-proxy_default
     # ports:
