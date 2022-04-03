@@ -10,6 +10,8 @@ services:
       - db_volume:/var/lib/mysql # バックアップ
     env_file:
       - ./docker/mysql/db-variable.env #環境変数の設定
+    networks:
+      - nginx-proxy_default
     restart: always
 
   app:
